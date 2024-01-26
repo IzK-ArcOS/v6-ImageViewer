@@ -1,33 +1,34 @@
-import { DefaultIcon } from "$ts/images/apps";
-import { Runtime } from "./runtime";
-import AppSvelte from "../App.svelte";
+import { ImageViewerIcon } from "$ts/images/apps";
 import { App } from "$types/app";
+import AppSvelte from "../App.svelte";
+import { Runtime } from "./runtime";
 
-export const app: App = {
+export const ImageViewer: App = {
   metadata: {
-    name: "App Template",
-    description: "This is an app template",
+    name: "Image Viewer",
+    description: "View images in ArcOS",
     author: "The ArcOS Team",
-    version: "0.0.0",
-    icon: DefaultIcon
+    version: "3.0.0",
+    icon: ImageViewerIcon
   },
   runtime: Runtime,
   content: AppSvelte,
-  id: "appTemplate",
-  size: { w: 0, h: 0 },
-  minSize: { w: 0, h: 0 },
-  maxSize: { w: 0, h: 0 },
-  pos: { x: 0, y: 0 },
+  id: "ImageViewer",
+  size: { w: 640, h: 480 },
+  minSize: { w: 300, h: 200 },
+  maxSize: { w: 1200, h: 800 },
+  pos: { x: 150, y: 150 },
   state: {
     minimized: false,
     maximized: false,
     headless: false,
     fullscreen: false,
-    resizable: false
+    resizable: true
   },
   controls: {
-    minimize: false,
-    maximize: false,
-    close: false
-  }
+    minimize: true,
+    maximize: true,
+    close: true
+  },
+  glass: true
 }

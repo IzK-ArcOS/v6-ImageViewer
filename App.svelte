@@ -1,9 +1,12 @@
 <script lang="ts">
-  import { App } from "$types/app";
   import "./css/main.css";
+  import { Runtime } from "./ts/runtime";
 
-  export let app: App;
+  export let runtime: Runtime;
+
+  const { url } = runtime;
 </script>
 
-<h1>Hello, World!</h1>
-<p>Working! App {app.metadata.name}, version {app.metadata.version}.</p>
+{#if $url}
+  <img src={$url} alt="" />
+{/if}
