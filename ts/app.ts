@@ -9,7 +9,8 @@ export const ImageViewer: App = {
     description: "View images in ArcOS",
     author: "The ArcOS Team",
     version: "3.0.0",
-    icon: ImageViewerIcon
+    icon: ImageViewerIcon,
+    appGroup: "utilities"
   },
   runtime: Runtime,
   content: AppSvelte,
