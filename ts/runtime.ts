@@ -1,11 +1,12 @@
 import { getAppById, spawnApp, spawnOverlay } from "$ts/apps";
 import { AppRuntime } from "$ts/apps/runtime";
 import { toBase64 } from "$ts/base64";
-import { ComponentIcon } from "$ts/images/general";
+import { ImageViewerIcon } from "$ts/images/apps";
 import { ImageMimeIcon } from "$ts/images/mime";
 import { Process } from "$ts/process";
 import { getParentDirectory } from "$ts/server/fs/dir";
 import { readFile } from "$ts/server/fs/file";
+import { getMimeIcon } from "$ts/server/fs/mime";
 import { FileProgress } from "$ts/server/fs/progress";
 import { pathToFriendlyPath } from "$ts/server/fs/util";
 import { MimeTypeIcons } from "$ts/stores/filesystem";
@@ -58,7 +59,8 @@ export class Runtime extends AppRuntime {
     this.buffer.set(await file.data.text())
     this.File.set(file);
     this.url.set(URL.createObjectURL(file.data));
-    this.setWindowTitle(file.name, true);
+    this.setWindowTitle(file.name);
+    this.setWindowIcon(getMimeIcon(file.name))
 
     setDone(1);
 
@@ -68,7 +70,7 @@ export class Runtime extends AppRuntime {
     spawnOverlay(getAppById("LoadSaveDialog"), this.pid, [
       {
         title: "Select Image file to open",
-        icon: ComponentIcon,
+        icon: ImageViewerIcon,
         extensions: MimeTypeIcons[ImageMimeIcon],
         startDir: getParentDirectory(this.path.get() || "./")
       },
