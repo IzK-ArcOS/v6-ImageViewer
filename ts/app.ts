@@ -31,5 +31,10 @@ export const ImageViewer: App = {
     maximize: true,
     close: true
   },
-  glass: true
+  glass: true,
+  acceleratorDescriptions: {
+    "alt+shift+o": "Open the file in File Manager",
+    "alt+o": "Open a file",
+    "alt+shift+a": "Set the file as your desktop wallpaper"
+  }
 }
