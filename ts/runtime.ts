@@ -89,6 +89,8 @@ export class Runtime extends AppRuntime {
   }
 
   public setAsBackground() {
+    if (!this.path.get()) return;
+
     const udata = UserDataStore.get();
 
     udata.sh.desktop.wallpaper = `@local:${toBase64(this.path.get())}`;
