@@ -30,16 +30,16 @@ export class Runtime extends AppRuntime {
       if (!v) return;
 
       await this.readFile(v);
-    })
+    });
 
     if (process.args.length && typeof process.args[0] === "string") {
-      this.handleOpenFile(process.args[0])
+      this.handleOpenFile(process.args[0]);
     } else {
       this.openFile();
     }
 
     this.loadAltMenu(...ImageViewerAltMenu(this));
-    this.process.accelerator.store.push(...ImageViewerAccelerators(this))
+    this.process.accelerator.store.push(...ImageViewerAccelerators(this));
   }
 
   async readFile(v: string) {
@@ -49,21 +49,19 @@ export class Runtime extends AppRuntime {
 
     const file = await readFile(v);
 
-
     if (!file) {
       setErrors(1);
       setDone(1);
       return;
     }
 
-    this.buffer.set(await file.data.text())
+    this.buffer.set(await file.data.text());
     this.File.set(file);
     this.url.set(URL.createObjectURL(file.data));
     this.setWindowTitle(file.name);
-    this.setWindowIcon(getMimeIcon(file.name))
+    this.setWindowIcon(getMimeIcon(file.name));
 
     setDone(1);
-
   }
 
   public openFile() {
@@ -72,7 +70,7 @@ export class Runtime extends AppRuntime {
         title: "Select Image file to open",
         icon: ImageViewerIcon,
         extensions: MimeTypeIcons[ImageMimeIcon],
-        startDir: getParentDirectory(this.path.get() || "./")
+        startDir: getParentDirectory(this.path.get() || "./"),
       },
     ]);
   }
@@ -80,35 +78,43 @@ export class Runtime extends AppRuntime {
   public openFileLocation() {
     const path = this.path.get();
 
-    if (!path) return
+    if (!path) return;
 
     const split = path.split("/");
     const filename = split[split.length - 1];
 
-    spawnApp("FileManager", 0, [path.replace(filename, "") || ".", path])
+    spawnApp("FileManager", 0, [path.replace(filename, "") || ".", path]);
   }
 
   public setAsBackground() {
     if (!this.path.get()) return;
 
+    const path = this.path.get();
     const udata = UserDataStore.get();
+    const base64 = toBase64(path);
 
-    udata.sh.desktop.wallpaper = `@local:${toBase64(this.path.get())}`;
+    if (base64 == path) return;
+
+    udata.sh.desktop.wallpaper = `@local:${base64}`;
 
     UserDataStore.set(udata);
   }
 
   public async LoadProgress(v: string = this.path.get()) {
-    return await FileProgress({
-      caption: "Reading Image",
-      subtitle: pathToFriendlyPath(v),
-      icon: ImageMimeIcon,
-      max: 1,
-      done: 0,
-      type: "quantity",
-      waiting: false,
-      working: true,
-      errors: 0
-    }, this.pid, false)
+    return await FileProgress(
+      {
+        caption: "Reading Image",
+        subtitle: pathToFriendlyPath(v),
+        icon: ImageMimeIcon,
+        max: 1,
+        done: 0,
+        type: "quantity",
+        waiting: false,
+        working: true,
+        errors: 0,
+      },
+      this.pid,
+      false
+    );
   }
 }
