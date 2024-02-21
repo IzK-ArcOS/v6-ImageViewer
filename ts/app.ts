@@ -10,7 +10,7 @@ export const ImageViewer: App = {
     author: "The ArcOS Team",
     version: "3.0.0",
     icon: ImageViewerIcon,
-    appGroup: "utilities"
+    appGroup: "utilities",
   },
   runtime: Runtime,
   content: AppSvelte,
@@ -24,17 +24,17 @@ export const ImageViewer: App = {
     maximized: false,
     headless: false,
     fullscreen: false,
-    resizable: true
+    resizable: true,
   },
   controls: {
     minimize: true,
     maximize: true,
-    close: true
+    close: true,
   },
   glass: true,
   acceleratorDescriptions: {
     "alt+shift+o": "Open the file in File Manager",
     "alt+o": "Open a file",
-    "alt+shift+a": "Set the file as your desktop wallpaper"
-  }
-}
+    "alt+shift+a": "Set the file as your desktop wallpaper",
+  },
+};

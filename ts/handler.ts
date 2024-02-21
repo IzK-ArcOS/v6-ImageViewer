@@ -10,5 +10,5 @@ export const ImageViewerHandler: FileHandler = {
   description: "Open the image in Image Viewer",
   handler(file) {
     openFileWithApp("ImageViewer", file);
-  }
-}
+  },
+};

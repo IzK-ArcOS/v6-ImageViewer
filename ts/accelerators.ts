@@ -9,14 +9,14 @@ export const ImageViewerAccelerators: (runtime: Runtime) => AppKeyCombinations =
       shift: true,
       action() {
         runtime.openFileLocation();
-      }
+      },
     },
     {
       key: "o",
       alt: true,
       action() {
         runtime.openFile();
-      }
+      },
     },
     {
       key: "a",
@@ -24,7 +24,7 @@ export const ImageViewerAccelerators: (runtime: Runtime) => AppKeyCombinations =
       shift: true,
       action() {
         runtime.setAsBackground();
-      }
-    }
-  ]
-}
+      },
+    },
+  ];
+};
