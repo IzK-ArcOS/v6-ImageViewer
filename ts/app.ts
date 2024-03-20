@@ -1,5 +1,6 @@
 import { SafeMode } from "$state/Desktop/ts/store";
 import { ImageViewerIcon } from "$ts/images/apps";
+import { HelpArticles } from "$ts/stores/articles";
 import { App } from "$types/app";
 import AppSvelte from "../App.svelte";
 import { Runtime } from "./runtime";
@@ -39,4 +40,5 @@ export const ImageViewer: App = {
     "alt+shift+a": "Set the file as your desktop wallpaper",
   },
   loadCondition: () => !SafeMode.get(),
+  helpArticle: HelpArticles.imageViewer,
 };

@@ -31,6 +31,7 @@ export const ImageViewerAltMenu: (runtime: Runtime) => ContextMenuItem[] = (
         action() {
           runtime.setAsBackground();
         },
+        disabled: () => !runtime.path.get(),
       },
       SEP_ITEM,
       {
