@@ -2,8 +2,10 @@ import { getAppById, spawnApp, spawnOverlay } from "$ts/apps";
 import { AppRuntime } from "$ts/apps/runtime";
 import { toBase64 } from "$ts/base64";
 import { ImageViewerIcon } from "$ts/images/apps";
-import { ImageMimeIcon } from "$ts/images/mime";
+import { ErrorIcon } from "$ts/images/dialog";
+import { ImageMimeIcon, SvgMimeIcon } from "$ts/images/mime";
 import { Process } from "$ts/process";
+import { createErrorDialog } from "$ts/process/error";
 import { getParentDirectory } from "$ts/server/fs/dir";
 import { readFile } from "$ts/server/fs/file";
 import { getMimeIcon } from "$ts/server/fs/mime";
@@ -22,6 +24,7 @@ export class Runtime extends AppRuntime {
   public buffer = Store<string>();
   public path = Store<string>();
   public url = Store<string>();
+  public fileLoadFromAlt = false;
 
   constructor(app: App, mutator: AppMutator, process: Process) {
     super(app, mutator, process);
@@ -45,13 +48,32 @@ export class Runtime extends AppRuntime {
   async readFile(v: string) {
     this.path.set(v);
 
-    const { setDone, setErrors } = await this.LoadProgress(v);
+    const { setDone } = await this.LoadProgress(v);
 
     const file = await readFile(v);
 
     if (!file) {
-      setErrors(1);
       setDone(1);
+      createErrorDialog(
+        {
+          title: "Can't open image",
+          message: `ArcOS failed to load the image. Please check if the file exists, and try again.`,
+          buttons: [
+            {
+              caption: "Okay",
+              action: () => {
+                if (!this.fileLoadFromAlt) this.closeApp();
+                else this.openFile();
+              },
+              suggested: true,
+            },
+          ],
+          image: ErrorIcon,
+          sound: "arcos.dialog.error",
+        },
+        this.pid,
+        true
+      );
       return;
     }
 
@@ -65,11 +87,12 @@ export class Runtime extends AppRuntime {
   }
 
   public openFile() {
+    this.fileLoadFromAlt = true;
     spawnOverlay(getAppById("LoadSaveDialog"), this.pid, [
       {
         title: "Select Image file to open",
         icon: ImageViewerIcon,
-        extensions: MimeTypeIcons[ImageMimeIcon],
+        extensions: [...MimeTypeIcons[ImageMimeIcon], ...MimeTypeIcons[SvgMimeIcon]],
         startDir: getParentDirectory(this.path.get() || "./"),
       },
     ]);
