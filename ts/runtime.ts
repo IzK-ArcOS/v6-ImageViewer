@@ -11,6 +11,7 @@ import { readFile } from "$ts/server/fs/file";
 import { getMimeIcon } from "$ts/server/fs/mime";
 import { FileProgress } from "$ts/server/fs/progress";
 import { pathToFriendlyPath } from "$ts/server/fs/util";
+import { focusedPid } from "$ts/stores/apps/focus";
 import { MimeTypeIcons } from "$ts/stores/filesystem";
 import { UserDataStore } from "$ts/stores/user";
 import { Store } from "$ts/writable";
@@ -54,6 +55,7 @@ export class Runtime extends AppRuntime {
 
     if (!file) {
       setDone(1);
+      focusedPid.set(this.pid);
       createErrorDialog(
         {
           title: "Can't open image",
@@ -84,6 +86,7 @@ export class Runtime extends AppRuntime {
     this.setWindowIcon(getMimeIcon(file.name));
 
     setDone(1);
+    focusedPid.set(this.pid);
   }
 
   public openFile() {
